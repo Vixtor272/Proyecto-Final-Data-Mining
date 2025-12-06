@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: trading_postgres
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DB}
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - trading_network
+
+  jupyter:
+    build: .
+    container_name: trading_jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_DB=${PG_DB}
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./ml_trading_classifier.py:/app/ml_trading_classifier.ipynb
+      - ./trading_model.pkl:/app/trading_model.pkl
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+    networks:
+      - trading_network
+
+  feature-builder:
+    build: .
+    container_name: trading_feature_builder
+    depends_on:
+      - postgres
+    environment:
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_DB=${PG_DB}
+      - PG_USER=${PG_USER}
+      - PG_PASSWORD=${PG_PASSWORD}
+    volumes:
+      - ./src:/app/src
+    command: tail -f /dev/null
+    networks:
+      - trading_network
+
+  # --- API DE MODELO ---
+  model-api:
+    build: .
+    container_name: trading_model_api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      # CAMBIO CLAVE: Montamos TODO el directorio actual (.) en /app
+      # Esto asegura que app.py y trading_model.pkl estén disponibles sin errores de ruta.
+      - .:/app
+    environment:
+      - MODEL_PATH=/app/trading_model.pkl
+      - PYTHONPATH=/app
+    # Comando de inicio
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - trading_network
+
+volumes:
+  postgres_data:
+
+networks:
+  trading_network:
+    driver: bridge
+
