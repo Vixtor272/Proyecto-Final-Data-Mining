@@ -9,7 +9,7 @@ import os
 # 1. Inicializar App
 app = FastAPI(title="Trading Prediction API", version="1.0")
 
-# 2. Cargar Modelo
+# 2. Cargar el Modelo
 MODEL_PATH = os.getenv("MODEL_PATH", "trading_model.pkl")
 
 try:
@@ -19,7 +19,7 @@ except Exception as e:
     print(f"Error cargando modelo: {e}")
     model = None
 
-# 3. Esquema de datos (Inputs)
+# 3. Esquema de los datos (Inputs)
 class MarketFeatures(BaseModel):
     volume_rel_prev: float
     return_prev: float
