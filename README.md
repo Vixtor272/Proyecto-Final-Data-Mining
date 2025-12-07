@@ -258,20 +258,10 @@ curl -X POST "http://localhost:8000/predict" \
     "dist_ma_50": 0.03,
     "volatility_5d": 0.012,
     "volatility_20d": 0.015,
+    "volatility_30d": 0.010,
     "day_of_week": 2,
     "month": 10
   }'
 ```
-
-#### Pasos para ejecutar
-
-1.  Asegúrate de que `app.py` esté en la misma carpeta que `docker-compose.yml`.
-2.  Si aún no tienes un modelo entrenado (`trading_model.pkl`), crea un archivo vacío temporalmente para que Docker no se queje al montar el volumen, o simplemente corre el entrenamiento primero:
-    ```bash
-    # (Opcional) Crea un placeholder si no has entrenado aun
-    touch trading_model.pkl 
-    ```
-3.  Levanta todo:
-    ```bash
-    docker-compose up --build
+Finalmente, también se ha incluído en el proyecto un archivo llamado _test_api_script.py_ el cual una vez haya sido levantado el docker y se haya conectado a la API entonces basta con correr directamente este _.py_ e ir modificando los parámetros que uno desea probar, el modelo te dará la predicción y te recomendará si comprar o no.
 
