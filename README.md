@@ -230,6 +230,14 @@ El sistema ejecuta un Backtest en datos fuera de muestra (Año 2025).
 
 Una alta precisión prediciendo caídas mejora el rendimiento respecto a un enfoque pasivo, principalmente por evitar drawdowns y preservar capital.
 
+### Justificación del modelo
+
+XGBoost se consolidó como el mejor modelo debido a su capacidad superior para manejar la **no linealidad** inherente a los datos financieros. A diferencia de modelos lineales (como la Regresión Logística) que buscan una línea recta para separar las clases, XGBoost utiliza un ensamblaje de árboles de decisión secuenciales (Gradient Boosting) que le permite aprender interacciones complejas entre indicadores técnicos, como detectar que un RSI alto solo es bajista si coincide con una divergencia en el MACD, capturando matices que otros modelos ignoran.
+
+
+
+Además, su éxito radica en su **equilibrio entre sesgo y varianza**. Mientras que un Árbol de Decisión simple tiende a memorizar el ruido (overfitting) y una SVM puede ser demasiado rígida, XGBoost incorpora mecanismos de regularización internos que penalizan la complejidad innecesaria. Esto le permitió "ignorar" el ruido aleatorio del mercado en el set de entrenamiento y generalizar mejor en el año 2025, resultando en una estrategia más selectiva y rentable que evitó operar en días de baja probabilidad de éxito.
+
 ---
 
 ### Despliegue de API y Uso
