@@ -230,6 +230,50 @@ El sistema ejecuta un Backtest en datos fuera de muestra (Año 2025). Para corre
 
 Una alta precisión prediciendo caídas mejora el rendimiento respecto a un enfoque pasivo, principalmente por evitar drawdowns y preservar capital.
 
+### Análisis de Resultados y Errores
+
+#### 1. Relación entre Métricas de ML y Retorno Financiero
+
+**Comparativa Validación/Test vs. Estrategia 2025**
+
+- **F1-Score (0.71 en Test):** Alto. Indica que el modelo detecta bien oportunidades de compra (recall alto en clase 1).  
+- **ROC-AUC (0.53 en Test):** Bajo, cercano al azar. Muestra dificultades para discriminar entre subidas y bajadas marginales.  
+- **Retorno Financiero (>40%):** Excelente.
+
+**¿Por qué esta discrepancia?**  
+El modelo actúa como un filtro de tendencia (tipo momentum). Aunque su capacidad de discriminación estadística (AUC) es baja por el ruido del mercado, su sesgo hacia comprar (recall alto) combinado con un mercado alcista en 2025 generó retornos elevados. La clave no fue acertar todo, sino acertar las subidas importantes y evitar unas pocas caídas críticas (los verdaderos negativos).
+
+---
+
+### Preguntas Clave
+
+**¿Un buen F1 implica necesariamente buen retorno?**  
+No. El F1 es una media armónica de precisión y recall, y no captura el impacto financiero desigual de cada error.
+
+**Escenario de Falla 1 — Alta Precisión, Bajo Recall:**  
+Un modelo con F1 aceptable que opera muy poco (tres operaciones al año). Si esas operaciones rinden poco, el retorno será irrelevante frente a un enfoque Buy & Hold.
+
+**Escenario de Falla 2 — Caídas Catastróficas:**  
+Un modelo puede tener F1 de 0.80 (acierta 8 de cada 10 días), pero si los dos errores ocurren en días de caída fuerte, puede perder más de lo ganado. El F1 trata todos los errores por igual; el mercado no.
+
+**Casos en los que el F1 no correlaciona con el retorno**
+
+- **Mercados bajistas:** Un modelo con sesgo alcista mantiene un F1 decente pero pierde dinero comprando caídas que siguen cayendo.  
+- **Eventos extremos (cisnes negros):** Un error en días de alta volatilidad puede ser muy costoso.  
+- **Overfitting:** Un F1 muy alto en validación que cae en Test suele traducirse en pérdidas reales.
+
+---
+
+#### 2. Análisis de Errores (Diagnóstico)
+
+Para entender las debilidades del modelo se identifican los contextos donde se producen los fallos (falsos positivos y falsos negativos).
+
+**Situaciones donde falla más**
+
+- **Días de alta volatilidad:** Cuando el indicador `volatility_5d` está en el cuartil superior, la precisión del modelo disminuye notablemente. Prefiere tendencias estables y se confunde con el ruido.  
+- **Cambios de régimen (RSI extremo):** Tiende a fallar en puntos de inflexión, especialmente cuando el RSI pasa de sobrecompra a caída brusca. Las variables con rezago reaccionan con un día de retraso al cambio de dirección.
+
+
 ### Justificación del modelo
 
 XGBoost se consolidó como el mejor modelo debido a su capacidad superior para manejar la **no linealidad** inherente a los datos financieros. A diferencia de modelos lineales (como la Regresión Logística) que buscan una línea recta para separar las clases, XGBoost utiliza un ensamblaje de árboles de decisión secuenciales (Gradient Boosting) que le permite aprender interacciones complejas entre indicadores técnicos, como detectar que un RSI alto solo es bajista si coincide con una divergencia en el MACD, capturando matices que otros modelos ignoran.
