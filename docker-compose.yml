@@ -50,7 +50,7 @@ services:
     networks:
       - trading_network
 
-  # --- API DE MODELO ---
+  # API DE MODELO 
   model-api:
     build: .
     container_name: trading_model_api
@@ -58,8 +58,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # CAMBIO CLAVE: Montamos TODO el directorio actual (.) en /app
-      # Esto asegura que app.py y trading_model.pkl estén disponibles sin errores de ruta.
       - .:/app
     environment:
       - MODEL_PATH=/app/trading_model.pkl
