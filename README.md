@@ -273,13 +273,16 @@ curl -X POST "http://localhost:8000/predict" \
 ```
 Finalmente, también se ha incluído en el proyecto un archivo llamado _test_api_script.py_ el cual una vez haya sido levantado el docker y se haya conectado a la API entonces basta con correr directamente este _.py_ e ir modificando los parámetros que uno desea probar, el modelo te dará la predicción y te recomendará si comprar o no.
 
-Checklist de Aceptación (Proyecto Final)
-[x] Se usa analytics.daily_features como base.
-[x] target_up definido sin leakage (fugas de datos).
-[x] ≥ 7 modelos entrenados, tuneados y comparados.
-[x] Baseline implementado (regla base o modelo simple).
-[x] Modelo ganador reentrenado en Train+Val y evaluado en Test.
-[x] Simulación de inversión con USD 10,000 en 2025 realizada y documentada.
-[x] Modelo serializado (.pkl) y cargado correctamente por la API.
-[x] El servicio model-api responde correctamente a peticiones /predict.
+
+### Checklist de Aceptación 
+
+- [x] Se usa `analytics.daily_features` como base.  
+- [x] `target_up` definido sin leakage.  
+- [x] ≥ 7 modelos entrenados, tuneados y comparados.  
+- [x] Baseline implementado (regla base o modelo simple).  
+- [x] Modelo ganador reentrenado en Train+Val y evaluado en Test.  
+- [x] Simulación de inversión con USD 10,000 en 2025 realizada y documentada.  
+- [x] Modelo serializado (`.pkl`) y cargado correctamente por la API.  
+- [x] El servicio `model-api` responde correctamente a peticiones `/predict`.
+
 
