@@ -19,7 +19,7 @@ payload = {
     "volatility_5d": 0.015,
     "volatility_20d": 0.012,
     "volatility_30d": 0.01,
-    "day_of_week": 2,             # Miércoles (Lunes=0)
+    "day_of_week": 2, # Miércoles (Lunes=0)
     "month": 10
 }
 
