@@ -146,16 +146,16 @@ MODEL_PATH=trading_model.pkl
 
 ### Pipeline de Entrenamiento (MLOps)
 
-El script _ml_trading_classifier.py_ maneja el ciclo de vida completo del modelo.
+El script _ml_trading_classifier.ipynb_ maneja el ciclo de vida completo del modelo.
 
 #### 1. Ejecutar Entrenamiento
 ```
-python ml_trading_classifier.py
+python ml_trading_classifier.ipynb
 ```
 
 Este proceso:
 
-- Descarga datos
+- Descarga datos (Postgres)
 
 - Genera indicadores técnicos (RSI, MACD, Bandas de Bollinger)
 
@@ -213,7 +213,7 @@ FN: Se predijo BAJADA y subió.
 --- 
 ### Simulación de Inversión (Backtesting)
 
-El sistema ejecuta un Backtest en datos fuera de muestra (Año 2025).
+El sistema ejecuta un Backtest en datos fuera de muestra (Año 2025). Para correr la simulación se debe ir a la útlima celda de código del notebook: _ml_trading_classifier.py_.
 
 ### Parámetros
 
