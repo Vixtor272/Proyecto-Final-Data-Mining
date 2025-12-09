@@ -110,15 +110,22 @@ A diferencia de los enfoques tradicionales de regresión de precios, este sistem
 
 ```text
 .
-├── analytics/                  # Datos generados (daily_features)
-├── src/                        # Código fuente de ingestión
-├── ml_trading_classifier.py    # Script principal: ETL, entrenamiento, validación y backtest
-├── app.py                      # API REST con FastAPI
-├── Dockerfile                  # Imagen de la API
-├── docker-compose.yml          # Orquestación de servicios
-├── requirements.txt            # Dependencias
-├── trading_model.pkl           # Artefacto del modelo entrenado
-└── README.md                   # Documentación
+├── notebooks/
+│   └── 01_ingesta_prices_raw.ipynb     # Notebook de Ingesta de los Activos
+├── src/
+│   └── build_features.py               # Construcción de variables (ETL)
+├── sql/
+│   └── init.sql                        # Esquema y configuraciones iniciales en PostgreSQL
+├── ml_trading_classifier.ipynb         # Entrenamiento, validación y backtest del modelo
+├── app.py                              # API REST (FastAPI)
+├── Dockerfile                          # Imagen de la API
+├── docker-compose.yml                  # Servicios: API, DB, volúmenes, red
+├── requirements.txt                    # Dependencias del proyecto
+├── trading_model.pkl                   # Modelo entrenado
+├── test_api_script.py                  # Pruebas simples de la API
+├── .env                                # Variables de entorno
+└── README.md                           # Documentación principal
+
 ```
 ---
 
